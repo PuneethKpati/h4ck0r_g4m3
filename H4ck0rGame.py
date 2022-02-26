@@ -1,8 +1,7 @@
-from turtle import back
+import sys
 import pygame
 from pygame.locals import *
-import os
-import sys
+# Game Modules
 from Player import Player
 from Map import Map
 
@@ -39,19 +38,18 @@ class H4ck0rGame:
             if self.movement_key_pressed(pressed):
                 map.update_player(pressed)
 
-
-
             pygame.display.flip()
             gameSurface.fill((0,0,0))
-            
             
             playerGroup.draw(gameSurface)
             pygame.display.update()
             
-            clock.tick(120)
+            clock.tick(60)
 
     def movement_key_pressed(self, pressed):
         return pressed[K_w] or pressed[K_s] or pressed[K_a] or pressed[K_d]
+
+
 game = H4ck0rGame()
 game.run()
 
