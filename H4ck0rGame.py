@@ -1,44 +1,57 @@
+from turtle import back
 import pygame
 from pygame.locals import *
 import os
 import sys
-
+from Player import Player
+from Map import Map
 
 class H4ck0rGame:
-
     def __init__(self):
         pygame.init()
 
-        windowDim   = (800, 800)
-        self.gameSurface = pygame.display.set_mode((0,0), HWSURFACE | DOUBLEBUF )
+    def run(self):
+        clock = pygame.time.Clock()
+
+        gameSurface = pygame.display.set_mode((0,0), HWSURFACE | DOUBLEBUF )
 
         pygame.display.set_caption('h4ck0r g4me')
         icon = pygame.image.load('./assets/icon.png')
         pygame.display.set_icon(icon)
 
-    def run(self):
-        
+        background = pygame.image.load('./assets/background.jpg')
+
+        # Map 
+        map = Map()
+
+        # Player 
+        player = Player('./assets/icon.png')
+        playerGroup = pygame.sprite.Group()
+        playerGroup.add(player)
+        map.add_player(player)
+
         while True: 
             for event in pygame.event.get():
                 if event.type == QUIT:
                     sys.exit()
-                elif event.type == TEXTINPUT:
-                    self.handleKey(event.text)
+                    
+            pressed = pygame.key.get_pressed()
+            if self.movement_key_pressed(pressed):
+                map.update_player(pressed)
+
+
+
+            pygame.display.flip()
+            gameSurface.fill((0,0,0))
             
-            self.welcome()
-            pygame.draw.rect(self.gameSurface, (255,255,255), (100,100,150,150))
             
-            pygame.display.update() 
+            playerGroup.draw(gameSurface)
+            pygame.display.update()
+            
+            clock.tick(120)
 
-    def welcome(self):
-
-        background = pygame.image.load('./assets/background.gif')
-        scaledBack = pygame.transform.scale(background, (self.gameSurface.get_width(), self.gameSurface.get_height()))
-        self.gameSurface.blit(scaledBack, (0,0))
-
-    def handleKey(self, key):
-        print('key pressed: ', key)
-
+    def movement_key_pressed(self, pressed):
+        return pressed[K_w] or pressed[K_s] or pressed[K_a] or pressed[K_d]
 game = H4ck0rGame()
 game.run()
 
