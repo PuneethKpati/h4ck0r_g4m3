@@ -38,6 +38,8 @@ class H4ck0rGame:
             if self.movement_key_pressed(pressed):
                 map.update_player(pressed)
 
+            player.update()
+
             pygame.display.flip()
             gameSurface.fill((0,0,0))
             
